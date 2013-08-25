@@ -1,6 +1,6 @@
 # pump.io with facebook Bridge Example
 
-Version 0.1
+Version 0.0.1
 
 This is a very simple facebook Bridge Example for pump.io, which you have already know about pump.io
 and want to add facebook message sync function.
