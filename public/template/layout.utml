@@ -121,6 +121,9 @@
     <script src="/javascript/libs/bootstrap-wysihtml5.js"></script>
     <script src="/javascript/libs/bootstrap-lightbox.min.js"></script>
     <% } %>
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script src="/javascript/facebookconnect.js"></script>
+    <div id='fb-root'></div>
     <script src="/javascript/pump.js"></script>
     <script src="/javascript/pump/auth.js"></script>
     <script src="/javascript/pump/model.js"></script>

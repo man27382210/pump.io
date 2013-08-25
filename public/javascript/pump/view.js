@@ -19,6 +19,18 @@
 // XXX: this needs to be broken up into 3-4 smaller modules
 
 (function(_, $, Backbone, Pump) {
+    $(this).on('fbStatusChange', function (event, data) {
+        console.log('message');
+        if (data.status === 'connected') {
+            $('#post-FB-button .icon-thumbs-up').show();
+            $('#post-FB-button .icon-thumbs-down').hide();
+            $('#post-note #FBcheckbox').show();
+        } else {
+            $('#post-FB-button .icon-thumbs-up').hide();
+            $('#post-FB-button .icon-thumbs-down').show();
+            $('#post-note #FBcheckbox').hide();
+        }
+    });
 
     Pump.templates = {};
 
@@ -554,7 +566,22 @@
         events: {
             "click #logout": "logout",
             "click #post-note-button": "postNoteModal",
-            "click #post-picture-button": "postPictureModal"
+            "click #post-picture-button": "postPictureModal",
+            "click #post-FB-button":"getFBLogin"
+        },
+        getFBLogin: function() {
+            facebookconnect.loginFB(function(res){
+                if (res) {
+                    $('#post-FB-button .icon-thumbs-up').show();
+                    $('#post-FB-button .icon-thumbs-down').hide();
+                    $('#post-note #FBcheckbox').show();
+                } else {
+                    $('#post-FB-button .icon-thumbs-up').hide();
+                    $('#post-FB-button .icon-thumbs-down').show();
+                    $('#post-note #FBcheckbox').hide();
+                }
+            });
+            return false;
         },
         postNoteModal: function() {
             var view = this,
@@ -2742,6 +2769,7 @@
                 text = view.$('#post-note #note-content').val(),
                 to = view.$('#post-note #note-to').val(),
                 cc = view.$('#post-note #note-cc').val(),
+                checkbox = view.$('#post-note #FBcheckbox').attr("checked"),
                 act = new Pump.Activity({
                     verb: "post",
                     object: {
@@ -2774,6 +2802,12 @@
                     view.showError(err);
                     view.stopSpin();
                 } else {
+                    //FB post
+                    if(checkbox){
+                        facebookconnect.postFB(act);
+                    }else{
+                        console.log('you dont want to post to FB');
+                    }
                     view.stopSpin();
                     view.$el.modal('hide');
                     Pump.resetWysihtml5(view.$('#note-content'));
@@ -3092,11 +3126,9 @@
             Pump.unfollowStreams();
 
             // XXX: double-check this
-
             Pump.debug("Initializing new " + View.prototype.templateName);
             body.content = new View(options);
             Pump.debug("Done initializing new " + View.prototype.templateName);
-
             // We try and only update the parts that have changed
 
             if (oldContent &&
@@ -3187,6 +3219,7 @@
         endLoad: function() {
             var view = this;
             view.$("a.brand").spin(false);
+            facebookconnect.getStatusFB();
         }
     });
 

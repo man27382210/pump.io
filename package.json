@@ -1,9 +1,9 @@
 {
-    "name": "pump.io",
+    "name": "pump.io Facebook bridge",
     "preferGlobal": "true",
-    "homepage": "http://pump.io/",
-    "version": "0.3.0-alpha.1",
-    "author": "Evan Prodromou <evan@e14n.com>",
+    "homepage": "",
+    "version": "0.0.1",
+    "author": "Davis Tesng (man27382210@gmail.com)",
     "devDependencies": {
         "vows": "0.7.x",
         "node-mocks-http": "0.0.x",

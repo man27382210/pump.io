@@ -13,6 +13,9 @@
         <div>
           <%= partial("recipient-selector", {name: "cc", id: "note-cc", label: "CC"}) %>
         </div>
+        <div>
+            <input id="FBcheckbox" type="checkbox" name="FB-post" value="FB-post"> post to facebook
+        </div>
       </fieldset>
     </form>
   </div>

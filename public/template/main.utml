@@ -7,9 +7,8 @@
 
         <h1><%- config.site %></h1>
 
-        <p>This site runs <a href="http://pump.io/">pump.io</a>, the
-	  high-performance Open Source social engine. It pumps your life
-	  in and out of your friends, family and colleagues.</p>
+        <p>This site runs <a href="http://pump.io/">pump.io</a>, and it's a simple example to show how facebook bridge runs <a href="">pump.io facebook-bridge site simple</a>, or you can just get the facebook-bridge code on <a href="">github</a> too.</p>
+
 
         <% if (config.disableRegistration) { %>
 
@@ -24,7 +23,8 @@
       </div>
 
       <div class="span4">
-        <img src="images/somefriends.jpg" width="340" height="235" class="img-rounded" />
+        <img src="images/498122926_681e09c14f_o.jpg" width="400" height="300" class="img-rounded" />
+        <p>The photo is get from flickr member <a href="http://www.flickr.com/photos/pshab/">pshab</a></p>
       </div>
 
     </div>
