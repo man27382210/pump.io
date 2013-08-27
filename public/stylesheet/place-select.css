@@ -1,0 +1,32 @@
+.place-select {
+	width: 80%;
+}
+
+.place-select ul {
+	max-height: 120px;
+	margin: 0;
+	padding: 0;
+	overflow-y: scroll;
+	border: 1px solid #aaa;
+}
+
+.place-select li {
+	list-style: none;
+	width: 100%;
+}
+
+.place-select a {
+	display: inline-block;
+	line-height: 2em;
+	width: 100%;
+}
+
+.place-select a:hover {
+	background-color: blue;
+	color: white;
+	text-decoration: none;
+}
+
+.place-select .active {
+	background-color: pink;
+}

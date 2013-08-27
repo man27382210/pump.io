@@ -22,10 +22,16 @@
   <% } %> -->
 <!-- </select> -->
 
-<ul class="place-select">
-  <% if (place && place.data && place.data.length > 0) { %>
-    <% _.each(place.data, function(objcet) { %>
-    <li value="<%- objcet.id %>"><%- objcet.name %></li>
-    <% }); %>
-  <% } %>
-</ul>
+<link href="/stylesheet/place-select.css" rel="stylesheet">
+<div class="place-select">
+  <ul>
+    <% if (places && places.length > 0) { %>
+      <% _.each(places, function (place) { %>
+      <li value="<%- place.id %>" imgurl="<%- place.imgUrl %>">
+        <a href="javascript:void(0)"><%- place.name %></a>
+      </li>
+      <% }); %>
+    <% } %>
+  </ul>
+  <img width="100%" />
+</div>

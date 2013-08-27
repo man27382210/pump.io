@@ -619,13 +619,13 @@
             return false;
         },
         postPlaceModal: function() {
-            var view = this,
+            var mapImgUrl = function (latlon) {
+                    return "http://maps.googleapis.com/maps/api/staticmap?center=" + latlon + "&zoom=16&size=500x200&sensor=false&markers=size:mid%7Ccolor:red%7C" + latlon;
+                },
+                view = this,
                 profile = Pump.principal,
                 lists = profile.lists,
                 following = profile.following,
-                latlon,// = "",
-                img_url,// = "",
-                place,// = [],
                 startSpin = function() {
                     view.$('#post-place-button').prop('disabled', true).spin(true);
                 },
@@ -634,30 +634,36 @@
                 };
                 startSpin();
                 //get place, and post all the place on the table
-            map.getLocation(function(position){
-                latlon=position.coords.latitude+","+position.coords.longitude;
-//                img_url="http://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=14&size=400x300&sensor=false";
-                facebookconnect.getPlace(latlon, function(res){
-                    place = res;
-                    console.log(place);
-            following.getAll(function(err) {
-                if (err) {
-                    view.showError(err);
-                    stopSpin();
-                } else {
-                    Pump.fetchObjects([lists], function(err, objs) {
+            map.getLocation(function (position) {
+                var latlon = position.coords.latitude + "," + position.coords.longitude;
+                facebookconnect.getPlace(latlon, function (res) {
+                    var places = res.data;
+                    _.map(places, function (place) {
+                        place.imgUrl = mapImgUrl(place.location.latitude + "," + place.location.longitude);
+                    });
+
+                    following.getAll(function (err) {
                         if (err) {
                             view.showError(err);
                             stopSpin();
                         } else {
-                            Pump.showModal(Pump.PostPlaceModal, {ready: function() {
-                                                                   stopSpin();
-                                                                },
-                                                                data: {user: Pump.principalUser,
-                                                                       lists: lists,
-                                                                       following: following,
-                                                                       //img_url: img_url,
-                                                                       place: place}});
+                            Pump.fetchObjects([lists], function (err, objs) {
+                                if (err) {
+                                    view.showError(err);
+                                    stopSpin();
+                                } else {
+                                    Pump.showModal(Pump.PostPlaceModal, {
+                                        ready: function () {
+                                            stopSpin();
+                                        },
+                                        data: {
+                                            user: Pump.principalUser,
+                                            lists: lists,
+                                            following: following,
+                                           //img_url: img_url,
+                                            places: places
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -2883,7 +2889,8 @@
         },
         events: {
             "click #send-place": "postPlace",
-            "hover .place-select li": "selectPlace"
+            "hover .place-select li": "hoverPlace",
+            "click .place-select li": "selectPlace"
         },
         postPlace: function(ev) {
             var view = this,
@@ -2938,8 +2945,12 @@
                 }
             });
         },
+        hoverPlace: function (ev) {
+            $('.place-select img').attr('src', $(ev.currentTarget).attr('imgurl'));
+        },
         selectPlace: function (ev) {
-            console.log(ev);
+            $('.place-select li').removeClass('active');
+            $(ev.currentTarget).addClass('active');
         }
     });
 
