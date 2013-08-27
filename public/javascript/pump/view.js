@@ -20,7 +20,6 @@
 
 (function(_, $, Backbone, Pump) {
     $(this).on('fbStatusChange', function (event, data) {
-        console.log('message');
         if (data.status === 'connected') {
             $('#post-FB-button .icon-thumbs-up').show();
             $('#post-FB-button .icon-thumbs-down').hide();
@@ -104,7 +103,6 @@
             var view = this,
                 data = view.options.data,
                 subs = view.subs;
-
             if (!subs) {
                 return;
             }
@@ -312,7 +310,6 @@
 
             // If there are sub-parts, we do them in parallel then
             // do the main one. Note: only one level.
-
             if (view.parts) {
                 pc = 0;
                 cnt = _.keys(view.parts).length;
@@ -567,7 +564,8 @@
             "click #logout": "logout",
             "click #post-note-button": "postNoteModal",
             "click #post-picture-button": "postPictureModal",
-            "click #post-FB-button":"getFBLogin"
+            "click #post-FB-button":"getFBLogin",
+            "click #post-place-button": "postPlaceModal"
         },
         getFBLogin: function() {
             facebookconnect.loginFB(function(res){
@@ -617,6 +615,56 @@
                     });
                 }
             });
+
+            return false;
+        },
+        postPlaceModal: function() {
+            var view = this,
+                profile = Pump.principal,
+                lists = profile.lists,
+                following = profile.following,
+                latlon,// = "",
+                img_url,// = "",
+                place,// = [],
+                startSpin = function() {
+                    view.$('#post-place-button').prop('disabled', true).spin(true);
+                },
+                stopSpin = function() {
+                    view.$('#post-place-button').prop('disabled', false).spin(false);
+                };
+                startSpin();
+                //get place, and post all the place on the table
+            map.getLocation(function(position){
+                latlon=position.coords.latitude+","+position.coords.longitude;
+//                img_url="http://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=14&size=400x300&sensor=false";
+                facebookconnect.getPlace(latlon, function(res){
+                    place = res;
+                    console.log(place);
+            following.getAll(function(err) {
+                if (err) {
+                    view.showError(err);
+                    stopSpin();
+                } else {
+                    Pump.fetchObjects([lists], function(err, objs) {
+                        if (err) {
+                            view.showError(err);
+                            stopSpin();
+                        } else {
+                            Pump.showModal(Pump.PostPlaceModal, {ready: function() {
+                                                                   stopSpin();
+                                                                },
+                                                                data: {user: Pump.principalUser,
+                                                                       lists: lists,
+                                                                       following: following,
+                                                                       //img_url: img_url,
+                                                                       place: place}});
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+
 
             return false;
         },
@@ -2819,6 +2867,82 @@
         }
     });
 
+    Pump.PostPlaceModal = Pump.TemplateView.extend({
+        tagName: "div",
+        className: "modal-holder",
+        templateName: 'post-location',
+        parts: ["recipient-selector",
+                "place-selector"],
+        ready: function() {
+            var view = this;
+            view.$('#note-content').wysihtml5({
+                customTemplates: Pump.wysihtml5Tmpl
+            });
+            view.$("#note-to").select2();
+            view.$("#note-cc").select2();
+        },
+        events: {
+            "click #send-place": "postPlace",
+            "hover .place-select option": "selectPlace"
+        },
+        postPlace: function(ev) {
+            var view = this,
+                text = view.$('#post-note #note-content').val(),
+                to = view.$('#post-note #note-to').val(),
+                cc = view.$('#post-note #note-cc').val(),
+                checkbox = view.$('#post-note #FBcheckbox').attr("checked"),
+                act = new Pump.Activity({
+                    verb: "post",
+                    object: {
+                        objectType: "note",
+                        content: text
+                    }
+                }),
+                strToObj = function(str) {
+                    var colon = str.indexOf(":"),
+                        type = str.substr(0, colon),
+                        id = str.substr(colon+1);
+                    return new Pump.ActivityObject({
+                        id: id,
+                        objectType: type
+                    });
+                };
+
+            if (to && to.length > 0) {
+                act.to = new Pump.ActivityObjectBag(_.map(to, strToObj));
+            }
+
+            if (cc && cc.length > 0) {
+                act.cc = new Pump.ActivityObjectBag(_.map(cc, strToObj));
+            }
+
+            view.startSpin();
+            
+            Pump.newMajorActivity(act, function(err, act) {
+                if (err) {
+                    view.showError(err);
+                    view.stopSpin();
+                } else {
+                    //FB post
+                    if(checkbox){
+                        facebookconnect.postPlaceFB(act);
+                    }else{
+                        console.log('you dont want to post to FB');
+                    }
+                    view.stopSpin();
+                    view.$el.modal('hide');
+                    Pump.resetWysihtml5(view.$('#note-content'));
+                    // Reload the current page
+                    Pump.addMajorActivity(act);
+                    view.remove();
+                }
+            });
+        },
+        selectPlace: function (ev) {
+            console.log(ev);
+        }
+    });
+
     Pump.PostPictureModal = Pump.TemplateView.extend({
         tagName: "div",
         className: "modal-holder",
@@ -2890,9 +3014,11 @@
 
                     Pump.newMajorActivity(act, function(err, act) {
                         if (err) {
+                            console.log(err);
                             view.showError(err);
                             view.stopSpin();
                         } else {
+                            console.log(act);
                             view.$el.modal('hide');
                             view.stopSpin();
                             view.$("#picture-fineupload").fineUploader('reset');

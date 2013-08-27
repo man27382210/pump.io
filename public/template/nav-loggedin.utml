@@ -6,16 +6,19 @@
     <button type="button" class="btn btn-small primary" id="post-note-button" title="Post a note">
       <span class="hidden-phone">Note </span><i class="icon-pencil"></i>
     </button>
-    <button type="button" class="btn btn-small primary" id="post-FB-button" title="Connect FB">
-        <span class="hidden-phone">FB </span>
-        <i class="icon-thumbs-up"></i>
-        <i class="icon-thumbs-down"></i>
-    </button>
     <% if (config.canUpload) { %>
     <button type="button" class="btn btn-small primary" id="post-picture-button" title="Post a picture">
       <span class="hidden-phone">Picture </span><i class="icon-picture"></i>
     </button>
     <% } %>
+    <button type="button" class="btn btn-small primary" id="post-FB-button" title="Connect FB">
+        <span class="hidden-phone">FB </span>
+        <i class="icon-thumbs-up"></i>
+        <i class="icon-thumbs-down"></i>
+    </button>
+    <button type="button" class="btn btn-small primary" id="post-place-button" title="Check in">
+      <span class="hidden-phone">CheckIn </span><i class="icon-map-marker"></i>
+    </button>
   </div>
 
   <ul class="nav pull-right">

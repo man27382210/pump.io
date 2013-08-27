@@ -28,7 +28,6 @@ window.fbAsyncInit = function () {
 
 var facebookconnect = {
     getStatusFB: function(){
-        console.log('.....');
         FB.getLoginStatus(function (response) {
             $(document).trigger('fbStatusChange', response);
         });
@@ -67,5 +66,30 @@ var facebookconnect = {
             } else {
             }
         });
-    }
+    },
+    getPlace: function (latlon, callback) {
+        var url = '/search?type=place&center='+latlon+'&distance=1000'
+        FB.api(url, function(response) {
+            callback(response);
+        });
+    },
+    postPlaceFB: function (act) {
+        var str = act.attributes.object.content;
+        var regex = /<br\s*[\/]?>/gi;
+        str = str.replace(regex, "\n");
+        var body = str;
+        FB.api('/me/feed', 'post', {
+            message: body,
+            actions: [{
+                'name': 'go to see pump.io',
+                'link': act.attributes.object.url
+            }]
+        }, function(response) {
+            if (!response || response.error) {
+                console.log(response.error);
+                console.log('Error occured');
+            } else {
+            }
+        });
+    },
 };
