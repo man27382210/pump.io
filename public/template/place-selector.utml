@@ -22,11 +22,10 @@
   <% } %> -->
 <!-- </select> -->
 
-<select>
+<ul class="place-select">
   <% if (place && place.data && place.data.length > 0) { %>
     <% _.each(place.data, function(objcet) { %>
-    <option value="<%- objcet.id %>"><%- objcet.name %></option>
+    <li value="<%- objcet.id %>"><%- objcet.name %></li>
     <% }); %>
   <% } %>
-  <option>1</option>
-</select>
+</ul>

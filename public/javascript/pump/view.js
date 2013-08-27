@@ -2883,7 +2883,7 @@
         },
         events: {
             "click #send-place": "postPlace",
-            "hover .place-select option": "selectPlace"
+            "hover .place-select li": "selectPlace"
         },
         postPlace: function(ev) {
             var view = this,
