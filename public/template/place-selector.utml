@@ -27,7 +27,7 @@
   <ul>
     <% if (places && places.length > 0) { %>
       <% _.each(places, function (place) { %>
-      <li value="<%- place.id %>" imgurl="<%- place.imgUrl %>">
+      <li fbid="<%- place.id %>" imgurl="<%- place.imgUrl %>">
         <a href="javascript:void(0)"><%- place.name %></a>
       </li>
       <% }); %>

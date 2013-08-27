@@ -73,7 +73,13 @@ var facebookconnect = {
             callback(response);
         });
     },
-    postPlaceFB: function (act) {
+    getPlaceLink: function (id, callback) {
+        var url = '/'+id;
+        FB.api(url, function(response) {
+            callback(response);
+        });
+    },
+    postPlaceFB: function (act, id) {
         var str = act.attributes.object.content;
         var regex = /<br\s*[\/]?>/gi;
         str = str.replace(regex, "\n");
@@ -82,7 +88,8 @@ var facebookconnect = {
             message: body,
             actions: [{
                 'name': 'go to see pump.io',
-                'link': act.attributes.object.url
+                'link': act.attributes.object.url,
+                'place': id
             }]
         }, function(response) {
             if (!response || response.error) {

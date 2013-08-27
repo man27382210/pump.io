@@ -2898,7 +2898,12 @@
                 to = view.$('#post-note #note-to').val(),
                 cc = view.$('#post-note #note-cc').val(),
                 checkbox = view.$('#post-note #FBcheckbox').attr("checked"),
-                act = new Pump.Activity({
+                selectPlace = $('.place-select .active').attr('fbid');
+            facebookconnect.getPlaceLink(selectPlace, function(respone){
+                var addText = '--@ <a href="'+respone.link + '">' + respone.name + '</a>';
+                text = text + addText;
+                console.log(text);
+                var act = new Pump.Activity({
                     verb: "post",
                     object: {
                         objectType: "note",
@@ -2915,35 +2920,37 @@
                     });
                 };
 
-            if (to && to.length > 0) {
-                act.to = new Pump.ActivityObjectBag(_.map(to, strToObj));
-            }
-
-            if (cc && cc.length > 0) {
-                act.cc = new Pump.ActivityObjectBag(_.map(cc, strToObj));
-            }
-
-            view.startSpin();
-            
-            Pump.newMajorActivity(act, function(err, act) {
-                if (err) {
-                    view.showError(err);
-                    view.stopSpin();
-                } else {
-                    //FB post
-                    if(checkbox){
-                        facebookconnect.postPlaceFB(act);
-                    }else{
-                        console.log('you dont want to post to FB');
-                    }
-                    view.stopSpin();
-                    view.$el.modal('hide');
-                    Pump.resetWysihtml5(view.$('#note-content'));
-                    // Reload the current page
-                    Pump.addMajorActivity(act);
-                    view.remove();
+                if (to && to.length > 0) {
+                    act.to = new Pump.ActivityObjectBag(_.map(to, strToObj));
                 }
+
+                if (cc && cc.length > 0) {
+                    act.cc = new Pump.ActivityObjectBag(_.map(cc, strToObj));
+                }
+
+                view.startSpin();
+                
+                Pump.newMajorActivity(act, function(err, act) {
+                    if (err) {
+                        view.showError(err);
+                        view.stopSpin();
+                    } else {
+                        //FB post
+                        if(checkbox && selectPlace){
+                            facebookconnect.postPlaceFB(act, selectPlace);
+                        }else{
+                            console.log('you dont want to post to FB');
+                        }
+                        view.stopSpin();
+                        view.$el.modal('hide');
+                        Pump.resetWysihtml5(view.$('#note-content'));
+                        // Reload the current page
+                        Pump.addMajorActivity(act);
+                        view.remove();
+                    }
+                }); 
             });
+            
         },
         hoverPlace: function (ev) {
             $('.place-select img').attr('src', $(ev.currentTarget).attr('imgurl'));
@@ -2951,6 +2958,7 @@
         selectPlace: function (ev) {
             $('.place-select li').removeClass('active');
             $(ev.currentTarget).addClass('active');
+            return false;
         }
     });
 
