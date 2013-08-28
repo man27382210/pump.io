@@ -50,17 +50,21 @@ var facebookconnect = {
 
     postFB: function (act) {
         var link = "\n see the pump -> " + act.attributes.object.url;
-        var str = text + link;
+        var str = act.attributes.object.content + link;
         var regex = /<br\s*[\/]?>/gi;
         str = str.replace(regex, "\n");
+        var body = str;
         FB.api('/me/feed', 'post', {
-            message: str
+            message: body
+            // actions: [{
+            //     'name': 'go to see pump.io',
+            //     'link': act.attributes.object.url
+            // }]
         }, function(response) {
             if (!response || response.error) {
                 console.log(response.error);
                 console.log('Error occured');
             } else {
-                console.log(response);
             }
         });
     },
