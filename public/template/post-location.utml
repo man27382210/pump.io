@@ -1,4 +1,4 @@
-<div id="modal-note" class="modal pump-modal hide fade" tabindex="-1" role="dialog" aria-labelledby="post-label" aria-hidden="true">
+<div id="modal-place" class="modal pump-modal hide fade" tabindex="-1" role="dialog" aria-labelledby="post-label" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h3 id="post-label">CheckIn</h3>
@@ -20,9 +20,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <div>
-            <input id="FBcheckbox" type="checkbox" name="FB-post" value="FB-post"> post to facebook
-    </div>
+    <input id="FBcheckbox" type="checkbox" name="FB-post" value="FB-post"> post to facebook
     <button type="submit" class="btn btn-primary" id="send-place">Send</button>
   </div>
 </div>
