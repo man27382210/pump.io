@@ -2823,7 +2823,7 @@
                 text = view.$('#post-note #note-content').val(),
                 to = view.$('#post-note #note-to').val(),
                 cc = view.$('#post-note #note-cc').val(),
-                checkbox = view.$('#post-note #FBcheckbox').attr("checked"),
+                checkbox = view.$('#modal-note #FBcheckbox').attr("checked"),
                 act = new Pump.Activity({
                     verb: "post",
                     object: {
@@ -2897,7 +2897,7 @@
                 text = view.$('#post-note #note-content').val(),
                 to = view.$('#post-note #note-to').val(),
                 cc = view.$('#post-note #note-cc').val(),
-                checkbox = view.$('#post-note #FBcheckbox').attr("checked"),
+                checkbox = view.$('#modal-note #FBcheckbox').attr("checked"),
                 selectPlace = $('.place-select .active').attr('fbid');
             facebookconnect.getPlaceLink(selectPlace, function(respone){
                 var addText = '--@ <a href="'+respone.link + '">' + respone.name + '</a>';
