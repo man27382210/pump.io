@@ -2901,13 +2901,12 @@
                 selectPlace = $('.place-select .active').attr('fbid');
             facebookconnect.getPlaceLink(selectPlace, function(respone){
                 var addText = '--@ <a href="'+respone.link + '">' + respone.name + '</a>';
-                text = text + addText;
                 console.log(text);
                 var act = new Pump.Activity({
                     verb: "post",
                     object: {
                         objectType: "note",
-                        content: text
+                        content: text + addText
                     }
                 }),
                 strToObj = function(str) {
@@ -2937,7 +2936,7 @@
                     } else {
                         //FB post
                         if(checkbox && selectPlace){
-                            facebookconnect.postPlaceFB(act, selectPlace);
+                            facebookconnect.postPlaceFB(act, selectPlace, text);
                         }else{
                             console.log('you dont want to post to FB');
                         }

@@ -44,7 +44,7 @@ var facebookconnect = {
                 }
             });
         }, {
-            scope: 'email, user_likes, offline_access, publish_stream'
+            scope: 'email, user_likes, offline_access, publish_stream, read_stream'
         });
     },
 
@@ -79,23 +79,24 @@ var facebookconnect = {
             callback(response);
         });
     },
-    postPlaceFB: function (act, id) {
-        var str = act.attributes.object.content;
+    postPlaceFB: function (act, id, text) {
+        var link = "\n see the pump -> " + act.attributes.object.url;
+        var str = text + link;
         var regex = /<br\s*[\/]?>/gi;
         str = str.replace(regex, "\n");
-        var body = str;
         FB.api('/me/feed', 'post', {
-            message: body,
-            actions: [{
-                'name': 'go to see pump.io',
-                'link': act.attributes.object.url,
-                'place': id
-            }]
+            message: str,
+            place: id//,
+            // actions: [{
+            //     name: 'go to see pump.io',
+            //     link: act.attributes.object.url
+            // }]
         }, function(response) {
             if (!response || response.error) {
                 console.log(response.error);
                 console.log('Error occured');
             } else {
+                console.log(response);
             }
         });
     },
