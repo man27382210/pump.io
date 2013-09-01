@@ -10,7 +10,6 @@ window.fbAsyncInit = function () {
         cookie: true, // enable cookies to allow the server to access the session
         xfbml: true  // parse XFBML
     });
-
 };
 
 // Load the SDK Asynchronously
@@ -56,10 +55,6 @@ var facebookconnect = {
         var body = str;
         FB.api('/me/feed', 'post', {
             message: body
-            // actions: [{
-            //     'name': 'go to see pump.io',
-            //     'link': act.attributes.object.url
-            // }]
         }, function(response) {
             if (!response || response.error) {
                 console.log(response.error);
@@ -87,11 +82,7 @@ var facebookconnect = {
         str = str.replace(regex, "\n");
         FB.api('/me/feed', 'post', {
             message: str,
-            place: id//,
-            // actions: [{
-            //     name: 'go to see pump.io',
-            //     link: act.attributes.object.url
-            // }]
+            place: id
         }, function(response) {
             if (!response || response.error) {
                 console.log(response.error);
