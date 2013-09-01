@@ -43,9 +43,9 @@ Otherwise, you can just use it by your way.
 * Step 1. You should have your own facebook app for your pump.io instance.
 It means you will have the appId, which will use after few steps.
 Just use this app for Facebook login, type your pump.io instance URL.
-![image](https://github.com/man27382210/pump.io/blob/master/readme_img/image_facebook_app_edit-0.png)
-![image](https://github.com/man27382210/pump.io/blob/master/readme_img/image_facebook_app_edit-1.png)
-![image](https://github.com/man27382210/pump.io/blob/master/readme_img/image_facebook_app_edit-2.png)
+![image](https://raw.github.com/man27382210/pump.io/blob/master/readme_img/image_facebook_app_edit-0.png)
+![image](https://raw.github.com/man27382210/pump.io/blob/master/readme_img/image_facebook_app_edit-1.png)
+![image](https://raw.github.com/man27382210/pump.io/blob/master/readme_img/image_facebook_app_edit-2.png)
 
 * Stpe 2. Add facebookconncet.js into folder public/javascript/pump, and change the appId for your's.
 
@@ -143,8 +143,8 @@ Check out the checkbox status, if true, call the postFB with act.
             });
 
 * We can see the message on the facebook!
-![image](https://github.com/man27382210/pump.io/blob/master/readme_img/image_facebook_sync_message-2.png)
-![image](https://github.com/man27382210/pump.io/blob/master/readme_img/image_facebook_sync_message-1.png)
+![image](https://raw.github.com/man27382210/pump.io/blob/master/readme_img/image_facebook_sync_message-2.png)
+![image](https://raw.github.com/man27382210/pump.io/blob/master/readme_img/image_facebook_sync_message-1.png)
 
 ## Other things
 * Fancy Avatars, © 2009 Brandon Mathis, http://brandonmathis.com/projects/fancy-avatars/ (CC-By)
